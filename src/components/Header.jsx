@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import { useContext } from 'react';
 import { AuthContext } from '../contexts/AuthContext.jsx';
-// Importe a imagem do seu logo aqui
 
 export default function Header() {
     const { user } = useContext(AuthContext);

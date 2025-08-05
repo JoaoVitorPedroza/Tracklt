@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
-import { PuffLoader } from 'react-spinners'; // Agora está correto!
+import { PuffLoader } from 'react-spinners';
 
 export default function Cadastro() {
     const [email, setEmail] = useState('');
@@ -33,7 +33,7 @@ export default function Cadastro() {
 
     return (
         <Container>
-            {/* Aqui vai o componente de logo */}
+
             <form onSubmit={handleCadastro}>
                 <input
                     type="email"

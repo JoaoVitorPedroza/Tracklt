@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 export default function Menu() {
     return (
         <MenuContainer>
-            <StyledLink to="/habitos">Hábitos</StyledLink>
+            <StyledLink to="/MeusHabitos">Hábitos</StyledLink>
             <StyledLink to="/hoje" className="hoje-button">Hoje</StyledLink>
             <StyledLink to="/historico">Histórico</StyledLink>
         </MenuContainer>

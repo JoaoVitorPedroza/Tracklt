@@ -15,28 +15,39 @@ export default function MeusHabitos() {
     const [newHabitName, setNewHabitName] = useState('');
     const [selectedDays, setSelectedDays] = useState([]);
 
-    function getHabits() {
-        const config = {
-            headers: {
-                Authorization: `Bearer ${user.token}`
-            }
-        };
+   // ... (código anterior)
 
-        axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits", config)
-            .then(res => {
-                setHabits(res.data);
-                setLoading(false);
-            })
-            .catch(err => {
-                alert(`Erro ao carregar hábitos: ${err.response.data.message}`);
-                setLoading(false);
-            });
-    }
-
-    useEffect(() => {
-        if (user) {
-            getHabits();
+function getHabits() {
+    // Certifica-se de que o token é usado para a requisição
+    const config = {
+        headers: {
+            Authorization: `Bearer ${user.token}`
         }
+    };
+
+    axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits", config)
+        .then(res => {
+            setHabits(res.data);
+            setLoading(false);
+        })
+        .catch(err => {
+            alert(`Erro ao carregar hábitos: ${err.response.data.message}`);
+            setLoading(false);
+        });
+}
+
+useEffect(() => {
+    // A função getHabits() só é chamada se houver um usuário logado
+    if (user) {
+        getHabits();
+    }
+}, [user]);
+
+// ... (código posterior)
+    useEffect(() => {
+    if (user) {
+        getHabits();
+    }
     }, [user]);
 
     function handleDaySelection(dayIndex) {
@@ -46,34 +57,40 @@ export default function MeusHabitos() {
             setSelectedDays([...selectedDays, dayIndex]);
         }
     }
+function handleCreateHabit(e) {
+    e.preventDefault();
 
-    function handleCreateHabit(e) {
-        e.preventDefault();
-        setFormLoading(true);
-
-        const config = {
-            headers: {
-                Authorization: `Bearer ${user.token}`
-            }
-        };
-        const body = {
-            name: newHabitName,
-            days: selectedDays
-        };
-
-        axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits", body, config)
-            .then(res => {
-                setFormLoading(false);
-                setNewHabitName('');
-                setSelectedDays([]);
-                setShowAddHabitForm(false);
-                getHabits();
-            })
-            .catch(err => {
-                setFormLoading(false);
-                alert(`Erro ao criar hábito: ${err.response.data.message}`);
-            });
+    // Adiciona a verificação para garantir que pelo menos um dia foi selecionado
+    if (selectedDays.length === 0) {
+        alert("Por favor, selecione pelo menos um dia da semana para o seu hábito.");
+        return; // Interrompe a execução da função
     }
+
+    setFormLoading(true);
+
+    const config = {
+        headers: {
+            Authorization: `Bearer ${user.token}`
+        }
+    };
+    const body = {
+        name: newHabitName,
+        days: selectedDays
+    };
+
+    axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits", body, config)
+        .then(res => {
+            setFormLoading(false);
+            setNewHabitName('');
+            setSelectedDays([]);
+            setShowAddHabitForm(false);
+            getHabits();
+        })
+        .catch(err => {
+            setFormLoading(false);
+            alert(`Erro ao criar hábito: ${err.response.data.message}`);
+        });
+}
 
     function handleDeleteHabit(habitId) {
         if (window.confirm("Você realmente quer deletar este hábito?")) {

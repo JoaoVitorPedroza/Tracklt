@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { PuffLoader } from 'react-spinners';
+import { AuthContext } from '../contexts/AuthContext.jsx';
 import logo from '../assets/logo-do-projeto.PNG';
 import {
     ScreenContainer,
@@ -11,6 +12,7 @@ import {
 } from '../style/LoginStyle.js';
 
 export default function Login() {
+    const { setUser } = useContext(AuthContext);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
@@ -28,6 +30,7 @@ export default function Login() {
         axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login", body)
             .then(res => {
                 localStorage.setItem('user', JSON.stringify(res.data));
+                setUser(res.data);
                 navigate("/MeusHabitos");
             })
             .catch(err => {
